@@ -2,11 +2,22 @@
 Pytorch implementation of "Uniformity Attention Learning-based Siamese Network for Person Re-Identification"
 
 ### Overall
-<center><img src="/figure/overall.png" width="90%"></center>
+<p align="center">
+  <img src="/figure/overall.png" width="90%">
+</p>
 
 ### Architecture
-<center><img src="/figure/architecture.png" width="90%"></center>
+<p align="center">
+  <img src="/figure/architecture.png" width="90%">
+</p>
 
 ### Qualitative Evaluation
-<img src="figure/quantitative.png">
+<p align="center">
+  <img src="figure/quantitative.png">
+</p>
+
+### Quantitative Evaluation
+<p align="center">
+  <img src="figure/table.png">
+</p>
 
