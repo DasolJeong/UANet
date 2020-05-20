@@ -36,7 +36,7 @@ git clone https://github.com/DasolJeong/UANet.git
 
 
 ### Dataset & Preparation
-Download [Market1501 Dataset](http://www.liangzheng.com.cn/Project/project_reid.html)
+Download [Market1501 Dataset](https://drive.google.com/drive/folders/1hUA8A9yNHPoD_rYdvom3BYPX0jbLkZa-?usp=sharing)
 
 Preparation: Put the images with the same id in one folder. You may use 
 ```bash
