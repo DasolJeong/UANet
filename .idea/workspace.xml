@@ -1,16 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="58dd0659-13ce-476e-b5a8-dcb6ef6228d4" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dg_train2.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/evaluate_gpu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/model_dg.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/prepare.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test.py" afterDir="false" />
-    </list>
+    <list default="true" id="58dd0659-13ce-476e-b5a8-dcb6ef6228d4" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -42,21 +33,37 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1589983069300</updated>
-      <workItem from="1589983073677" duration="881000" />
+      <workItem from="1589983073677" duration="1124000" />
     </task>
+    <task id="LOCAL-00001" summary="first commit">
+      <created>1589984038757</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589984038757</updated>
+    </task>
+    <task id="LOCAL-00002" summary="first commit">
+      <created>1589984173529</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1589984173529</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="first commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="-1227" y="160" key="CommitChangelistDialog2" timestamp="1589984038240">
+    <state x="-1227" y="160" key="CommitChangelistDialog2" timestamp="1589984173036">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1227" y="160" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1589984038240" />
+    <state x="-1227" y="160" key="CommitChangelistDialog2/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1589984173036" />
     <state x="-1156" y="338" width="440" height="522" key="FileChooserDialogImpl" timestamp="1589983909057">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
@@ -65,10 +72,10 @@
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
     <state x="-1459" y="162" key="SettingsEditor/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1589983954016" />
-    <state x="-1368" y="253" key="Vcs.Push.Dialog.v2" timestamp="1589984053565">
+    <state x="-1368" y="253" key="Vcs.Push.Dialog.v2" timestamp="1589984184343">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="-1368" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1589984053565" />
+    <state x="-1368" y="253" key="Vcs.Push.Dialog.v2/0.0.1920.1040/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1589984184343" />
     <state x="-1042" y="484" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589983808696">
       <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
