@@ -16,12 +16,8 @@ import torch.backends.cudnn as cudnn
 import matplotlib
 matplotlib.use('agg')
 import matplotlib.pyplot as plt
-import copy
-from PIL import Image
 import time
 import os
-#from reid_sampler import StratifiedSampler
-from model import ft_net, ft_net_dense, PCB, verif_net
 from model_dg import ds_net
 from random_erasing import RandomErasing
 from tripletfolder import TripletFolder
