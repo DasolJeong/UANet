@@ -10,9 +10,7 @@ from torchvision import datasets, transforms
 import os
 import scipy.io
 import yaml
-from model import ft_net, PCB, PCB_test, ft_net_concat, ft_net_ori
-# from model2 import ft_net_dg
-from model_dg import ds_net
+from model import UANet
 import json
 
 device = torch.device("cuda:0, 1" if torch.cuda.is_available() else "cpu")
@@ -20,7 +18,7 @@ device = torch.device("cuda:0, 1" if torch.cuda.is_available() else "cpu")
 # fp16
 try:
     from apex.fp16_utils import *
-except ImportError: # will be 3.x series
+except ImportError:  # will be 3.x series
     print('This is not an error. If you want to use low precision, i.e., fp16, please install the apex with cuda support (https://github.com/NVIDIA/apex) and update pytorch to 1.0')
 ######################################################################
 # Options
@@ -85,16 +83,6 @@ def main():
             transforms.Resize((256,128), interpolation=3),
             transforms.ToTensor(),
             transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])
-    ############### Ten Crop
-            #transforms.TenCrop(224),
-            #transforms.Lambda(lambda crops: torch.stack(
-             #   [transforms.ToTensor()(crop)
-              #      for crop in crops]
-               # )),
-            #transforms.Lambda(lambda crops: torch.stack(
-             #   [transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225])(crop)
-              #       for crop in crops]
-              # ))
     ])
 
     if opt.PCB:
@@ -203,19 +191,11 @@ def main():
     ######################################################################
     # Load Collected data Trained model
     print('-------test-----------')
-    if opt.use_dense:
-        model_structure = ft_net_dense(751)
-    else:
-        model_structure = ds_net(751)
-
-    if opt.PCB:
-        model_structure = PCB(751)
-
+    model_structure = UANet(751)
     if opt.fp16:
         model_structure = network_to_half(model_structure)
 
     model = load_network(model_structure)
-    # model = model_structure
 
     # Remove the final fc layer and classifier layer
 

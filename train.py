@@ -18,7 +18,7 @@ matplotlib.use('agg')
 import matplotlib.pyplot as plt
 import time
 import os
-from model_dg import ds_net
+from model import UANet, verif_net
 from random_erasing import RandomErasing
 from tripletfolder import TripletFolder
 import yaml
@@ -41,7 +41,7 @@ parser.add_argument('--alpha', default=1.0, type=float, help='alpha')
 parser.add_argument('--erasing_p', default=0.5, type=float, help='Random Erasing probability, in [0,1]')
 parser.add_argument('--use_dense', action='store_true', help='use densenet121' )
 parser.add_argument('--PCB', action='store_true', help='use PCB+ResNet50' )
-parser.add_argument('--model', default=ds_net)
+parser.add_argument('--model', default=UANet)
 opt = parser.parse_args()
 
 data_dir = opt.data_dir
@@ -142,12 +142,14 @@ since = time.time()
 # In the following, parameter ``scheduler`` is an LR scheduler object from
 # ``torch.optim.lr_scheduler``.
 
+
 y_loss = {} # loss history
 y_loss['train'] = []
 y_loss['val'] = []
 y_err = {}
 y_err['train'] = []
 y_err['val'] = []
+
 
 def train_model(model, model_verif, criterion, optimizer, scheduler, num_epochs=25):
     since = time.time()
@@ -176,9 +178,9 @@ def train_model(model, model_verif, criterion, optimizer, scheduler, num_epochs=
             for i, data in enumerate(dataloaders[phase]):
                 # get the inputs
                 inputs, labels, pos, neg = data
-                now_batch_size,c,h,w = inputs.shape
+                now_batch_size, c, h, w = inputs.shape
 
-                if now_batch_size<opt.batchsize: # next epoch
+                if now_batch_size<opt.batchsize:  # next epoch
                     continue
 
                 if use_gpu:
@@ -196,7 +198,7 @@ def train_model(model, model_verif, criterion, optimizer, scheduler, num_epochs=
                 _, neg_att_score, nf = model(neg)
                 pscore = model_verif(pf * f)
                 nscore = model_verif(nf * f)
-                #print(pf.requires_grad)
+
                 # loss
                 # ---------------------------------
                 labels_0 = torch.zeros(now_batch_size).long()
@@ -208,22 +210,18 @@ def train_model(model, model_verif, criterion, optimizer, scheduler, num_epochs=
                 _, n_preds = torch.max(nscore.data, 1)
                 loss_id = criterion(outputs, labels)
                 loss_verif = (criterion(pscore, labels_0) + criterion(nscore , labels_1)) * 0.5 * opt.alpha
-                # loss_att = criterion(att_score, pos_att_score.long())
 
                 att_loss = nn.L1Loss()
                 loss_att_p = att_loss(att_score, pos_att_score)
                 loss_att_n = att_loss(att_score, neg_att_score)
                 loss_att = max(loss_att_p.data - loss_att_n.data + 0.3, 0)
-                # att_loss = (loss_att(a1, ap1) + loss_att(a2, ap2) + loss_att(a3, ap3) + loss_att(a4, ap4)) * 10000
-                # + criterion(a2, ap2.long) + criterion(a3, ap3.long) + criterion(a4, ap4.long)
+
                 loss = loss_id + loss_verif + loss_att
-                # print(loss)
+
                 # backward + optimize only if in training phase
 
                 print(" Epoch: {} / {} / {} / IDE loss: {:.4f} Siamese loss: {:.4f} Att loss: {:.4f}"
                       .format(epoch, i, len(dataloaders[phase]), loss_id, loss_verif, loss_att))
-                # print(" Epoch: {} / {} / {} / IDE loss: {:.4f} Siamese loss: {:.4f}"
-                #       .format(epoch, i, len(dataloaders[phase]), loss_id, loss_verif))
 
                 if phase == 'train':
                     loss.backward()
@@ -305,13 +303,7 @@ def save_network(network, epoch_label):
 # Load a pretrainied model and reset final fully connected layer.
 #
 
-if opt.use_dense:
-    model = ft_net_dense(len(class_names))
-else:
-    model = opt.model(len(class_names))
-
-if opt.PCB:
-    model = PCB(len(class_names))
+model = opt.model(len(class_names))
 
 model_verif = verif_net()
 
@@ -321,39 +313,16 @@ if use_gpu:
 
 criterion = nn.CrossEntropyLoss()
 
-if not opt.PCB:
-    ignored_params = list(map(id, model.model.fc.parameters() )) + list(map(id, model.classifier.parameters() ))
-    base_params = filter(lambda p: id(p) not in ignored_params, model.parameters())
-    optimizer_ft = optim.SGD([
-             {'params': base_params, 'lr': 0.1*opt.lr},
-             {'params': model.model.fc.parameters(), 'lr': opt.lr},
-             {'params': model.classifier.parameters(), 'lr': opt.lr},
-             {'params': model_verif.classifier.parameters(), 'lr': opt.lr}
-         ], weight_decay=5e-4, momentum=0.9, nesterov=True)
-else:
-    ignored_params = list(map(id, model.model.fc.parameters() ))
-    ignored_params += (list(map(id, model.classifier0.parameters() ))
-                     +list(map(id, model.classifier1.parameters() ))
-                     +list(map(id, model.classifier2.parameters() ))
-                     +list(map(id, model.classifier3.parameters() ))
-                     +list(map(id, model.classifier4.parameters() ))
-                     +list(map(id, model.classifier5.parameters() ))
-                     #+list(map(id, model.classifier6.parameters() ))
-                     #+list(map(id, model.classifier7.parameters() ))
-                      )
-    base_params = filter(lambda p: id(p) not in ignored_params, model.parameters())
-    optimizer_ft = optim.SGD([
-             {'params': base_params, 'lr': 0.001},
-             {'params': model.model.fc.parameters(), 'lr': 0.01},
-             {'params': model.classifier0.parameters(), 'lr': 0.01},
-             {'params': model.classifier1.parameters(), 'lr': 0.01},
-             {'params': model.classifier2.parameters(), 'lr': 0.01},
-             {'params': model.classifier3.parameters(), 'lr': 0.01},
-             {'params': model.classifier4.parameters(), 'lr': 0.01},
-             {'params': model.classifier5.parameters(), 'lr': 0.01},
-             #{'params': model.classifier6.parameters(), 'lr': 0.01},
-             #{'params': model.classifier7.parameters(), 'lr': 0.01}
-         ], weight_decay=5e-4, momentum=0.9, nesterov=True)
+
+ignored_params = list(map(id, model.model.fc.parameters() )) + list(map(id, model.classifier.parameters() ))
+base_params = filter(lambda p: id(p) not in ignored_params, model.parameters())
+optimizer_ft = optim.SGD([
+         {'params': base_params, 'lr': 0.1*opt.lr},
+         {'params': model.model.fc.parameters(), 'lr': opt.lr},
+         {'params': model.classifier.parameters(), 'lr': opt.lr},
+         {'params': model_verif.classifier.parameters(), 'lr': opt.lr}
+     ], weight_decay=5e-4, momentum=0.9, nesterov=True)
+
 
 exp_lr_scheduler = lr_scheduler.MultiStepLR(optimizer_ft, milestones=[40,60,80], gamma=0.1)
 
@@ -363,11 +332,11 @@ exp_lr_scheduler = lr_scheduler.MultiStepLR(optimizer_ft, milestones=[40,60,80],
 #
 # It should take around 1-2 hours on GPU.
 #
-dir_name = os.path.join('./model',name)
+dir_name = os.path.join('./model', name)
 if not os.path.isdir(dir_name):
     os.mkdir(dir_name)
     copyfile('dg_train.py', dir_name + '/train.py')
-    copyfile('model_dg.py', dir_name+'/model.py')
+    copyfile('model.py', dir_name + '/model.py')
     copyfile('tripletfolder.py', dir_name + '/tripletfolder.py')
 
 # save opts

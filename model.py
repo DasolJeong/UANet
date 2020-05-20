@@ -114,10 +114,10 @@ class att_block(nn.Module):
         return x
 
 
-class ds_net(nn.Module):
+class UANet(nn.Module):
 
     def __init__(self, class_num):
-        super(ds_net, self).__init__()
+        super(UANet, self).__init__()
         model_ft = models.resnet50(pretrained=True)
         # avg pooling to global pooling
         model_ft.avgpool = nn.AdaptiveAvgPool2d((1, 1))
