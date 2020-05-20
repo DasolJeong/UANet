@@ -53,7 +53,7 @@ Remember to change the dataset path to your own path.
 ### Train
 Train a model by
 ```bash
-python train.py --gpu_ids 0 --name ft_ResNet50 --train_all --batchsize 32  --data_dir your_data_path
+python train.py --gpu_ids 0 --name ft_uanet --train_all --batchsize 32  --data_dir your_data_path
 ```
 `--gpu_ids` which gpu to run.
 
