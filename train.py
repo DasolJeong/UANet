@@ -31,7 +31,7 @@ version =  torch.__version__
 # --------
 parser = argparse.ArgumentParser(description='Training')
 parser.add_argument('--gpu_ids',default='0,1', type=str,help='gpu_ids: e.g. 0  0,1,2  0,2')
-parser.add_argument('--name',default='market1501_layer_4', type=str, help='output model name')
+parser.add_argument('--name',default='ft_uanet', type=str, help='output model name')
 parser.add_argument('--data_dir',default='market1501/pytorch',type=str, help='training dir path')
 parser.add_argument('--train_all', action='store_true', help='use all training data' )
 parser.add_argument('--color_jitter', action='store_true', help='use color jitter in training' )
