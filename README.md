@@ -34,6 +34,7 @@ Pytorch implementation of "Uniformity Attention Learning-based Siamese Network f
 git clone https://github.com/DasolJeong/UANet.git
 ```
 
+
 ### Dataset & Preparation
 Download [Market1501 Dataset](http://www.liangzheng.com.cn/Project/project_reid.html)
 
@@ -47,6 +48,7 @@ Remember to change the dataset path to your own path.
 ### Run experiments from pretrained weight
 
 - Download pretrained weight from the link. [[Google Drive]](https://drive.google.com/drive/folders/1RISrVEaW2OvmSnH28gDGxrhIWKJzYIV6?usp=sharing)
+
 
 ### Train
 Train a model by
@@ -69,6 +71,7 @@ Train a model with random erasing by
 ```bash
 python train.py --gpu_ids 0 --name ft_uanet --train_all --batchsize 32  --data_dir your_data_path --erasing_p 0.5
 ```
+
 
 ### Test
 Use trained model to extract feature by
